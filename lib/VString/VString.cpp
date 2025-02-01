@@ -10,9 +10,21 @@ String intToBits(int x)
 {
     String bits = "";
 
-    for (int i = 0; i < 16; i++)
+    for (int i = 0; i < 32; i++)
     {
         bits += (x | 1 << i) == x ? "1" : "0";
+    }
+
+    return bits;
+}
+
+String int16ToBits(uint16_t x)
+{
+    String bits = "";
+
+    for (int i = 0; i < 16; i++)
+    {
+        bits += (x & (1 << i)) ? "1" : "0";
     }
 
     return bits;
@@ -33,12 +45,4 @@ String byteToBits(byte b)
 String buttonState(String name, int buttonData, byte bit)
 {
     return name + ": " + ((buttonData & (1 << bit)) ? "Pressed" : "Released");
-}
-
-void debugAsPersistentText(String text)
-{
-    // Send the ANSI escape code to clear the screen
-    // Serial.print("\033c");  // Or Serial.print("\x1Bc");
-    Serial.print("\033[H"); // Clear screen and move cursor to the top-left
-    Serial.println(text);
 }

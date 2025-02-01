@@ -28,8 +28,8 @@ public:
     SNESController();
     SNESController(int _clockPin, int _latchPin, int _dataPin);
 
-    int getPressedButtons() { return pressedButtons; }
-    int getPreviousPressedButtons() { return previousPressedButtons; }
+    uint16_t getPressedButtons() { return pressedButtons; }
+    uint16_t getPreviousPressedButtons() { return previousPressedButtons; }
     bool getConnected() { return connected; }
     bool getPreviousConnected() { return previousConnected; }
 
@@ -42,8 +42,8 @@ private:
     int clockPin;
     int latchPin;
     int dataPin;
-    int pressedButtons;
-    int previousPressedButtons;
+    uint16_t pressedButtons;
+    uint16_t previousPressedButtons;
     bool connected;
     bool previousConnected;
 

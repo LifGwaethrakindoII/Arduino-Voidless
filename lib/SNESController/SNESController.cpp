@@ -69,9 +69,18 @@ SNESController::SNESController(int _clockPin, int _latchPin, int _dataPin)
 
 void SNESController::update()
 {
-    evaluateConnected();
+    // Check the data pin before reading
+    bool dataPinStateBefore = digitalRead(dataPin);
+
+    // Read the controller
     latchPulse();
     readController();
+
+    // Check the data pin after reading
+    bool dataPinStateAfter = digitalRead(dataPin);
+
+    // If the data pin remained HIGH throughout, assume no controller is connected
+    connected = !(dataPinStateBefore == HIGH && dataPinStateAfter == HIGH);
 
     previousConnected = connected;
     previousPressedButtons = pressedButtons;
@@ -81,12 +90,6 @@ void SNESController::update()
 {
     return connected ? (pressedButtons | (1 << button)) == pressedButtons : false;
 }*/ 
-
-void SNESController::evaluateConnected()
-{
-    //TODO: Fix...
-    connected = true;
-}
 
 void SNESController::setupPins()
 {
@@ -139,7 +142,7 @@ String SNESController::toString()
     builder += " }";
     builder += "\r\n";
     builder += "Button States (as Bitchain): ";
-    builder += intToBits(pressedButtons);
+    builder += int16ToBits(pressedButtons);
     builder += "\r\n";
     builder += "Connected: ";
     builder += boolToString(connected);
